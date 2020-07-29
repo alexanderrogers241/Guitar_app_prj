@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NTWrwm243U4+1Cjv/OPlVS3f8tWuGognQXn7TZGToi2Dz7X8+v0ZFGl6wPXID65LGWZAESidrhujj/4IHya/OA==",
+  "dgSpecHash": "4rr1AUnsjptE/AXbjEqpEfM4ptydljrn/GHJ6FWTaOsgfAq+tos1ZHmy5iEs7DPtWav7F8MuBpgUcwjYy9BrIw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\alexr\\source\\repos\\Packaged_Database\\Packaged_Database.csproj",
+  "projectFilePath": "C:\\Users\\alexr\\Documents\\GitHub\\Guitar_app_prj\\Packaged_Database.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\alexr\\.nuget\\packages\\skiasharp\\2.80.1\\skiasharp.2.80.1.nupkg.sha512",
     "C:\\Users\\alexr\\.nuget\\packages\\skiasharp.views\\2.80.1\\skiasharp.views.2.80.1.nupkg.sha512",

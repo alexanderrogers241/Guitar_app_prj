@@ -18,7 +18,7 @@ namespace Packaged_Database
     public class ChordListActivity : Activity
     {
         public IList<Chord> chord_list;
-        public APK_SQlightDB_Class db_obj;
+        public SQlightDB_Class db_obj;
         public ChordListAdapter chordlist_adp;
         public ListView ChordListView = null;
         public string dbfilename;
@@ -28,7 +28,7 @@ namespace Packaged_Database
             SetContentView(Resource.Layout.activity_chordlist);
             dbfilename = Resources.GetString(Resource.String.database_name);
             //Set up objs
-            db_obj = new APK_SQlightDB_Class(dbfilename);
+            db_obj = new SQlightDB_Class(dbfilename);
             chord_list = db_obj.GetChords().ToList();
             chordlist_adp = new ChordListAdapter(this, chord_list);
             ChordListView = FindViewById<ListView>(Resource.Id.CHORDLIST);

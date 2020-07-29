@@ -17,7 +17,7 @@ namespace Packaged_Database
 	[Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
 	public class MainActivity : Activity
 	{
-		public APK_SQlightDB_Class db_obj;
+		public SQlightDB_Class db_obj;
 		public Button Button_obj;
 		public SKCanvasView skiaView_obj;
 		public string dbfilename;
@@ -29,9 +29,9 @@ namespace Packaged_Database
 			Xamarin.Essentials.Platform.Init(this, savedInstanceState);
 			// Set our view from the "main" layout resource
 			SetContentView(Resource.Layout.activity_main);
-			dbfilename = Resources.GetString(Resource.String.database_name);
+			
 			// Set up objects
-			db_obj = new APK_SQlightDB_Class(dbfilename); //database
+			
 			skiaView_obj = FindViewById<SKCanvasView>(Resource.Id.SKIAVIEW_MAIN);
 			Button_obj = FindViewById<Button>(Resource.Id.BUTTON_CHORDLIST);
 			// Set up events

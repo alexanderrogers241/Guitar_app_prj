@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alexr\\source\\repos\\Packaged_Database\\Packaged_Database.csproj": {}
+    "C:\\Users\\alexr\\Documents\\GitHub\\Guitar_app_prj\\Packaged_Database.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alexr\\source\\repos\\Packaged_Database\\Packaged_Database.csproj": {
+    "C:\\Users\\alexr\\Documents\\GitHub\\Guitar_app_prj\\Packaged_Database.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alexr\\source\\repos\\Packaged_Database\\Packaged_Database.csproj",
+        "projectUniqueName": "C:\\Users\\alexr\\Documents\\GitHub\\Guitar_app_prj\\Packaged_Database.csproj",
         "projectName": "Packaged_Database",
-        "projectPath": "C:\\Users\\alexr\\source\\repos\\Packaged_Database\\Packaged_Database.csproj",
+        "projectPath": "C:\\Users\\alexr\\Documents\\GitHub\\Guitar_app_prj\\Packaged_Database.csproj",
         "packagesPath": "C:\\Users\\alexr\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alexr\\source\\repos\\Packaged_Database\\obj\\",
+        "outputPath": "C:\\Users\\alexr\\Documents\\GitHub\\Guitar_app_prj\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [

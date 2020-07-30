@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.App;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
+using Java.IO;
+using Java.Lang;
+using Java.Util;
 using SkiaSharp;
 using SkiaSharp.Views.Android;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Packaged_Database
 {
@@ -21,6 +19,15 @@ namespace Packaged_Database
 
 		private List<int> chord_frets_parsed;
 		private int ChordPos;
+		private string ChordName;
+
+
+		// Drawing constants
+		private float space;
+		private float x_start;
+		private float y_start;
+		private float string_len;
+		private float fret_len_space;
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
@@ -32,8 +39,9 @@ namespace Packaged_Database
 
 
 			// Get Chord from intent
-			string chord_frets = Intent.Extras.GetString("Chord");
-			int.TryParse(Intent.Extras.GetString("Chord_pos"), out ChordPos);
+			string chord_frets = Intent.GetStringExtra("Chord");
+			ChordPos = Intent.GetIntExtra("Chord_pos", 0);
+			ChordName = Intent.GetStringExtra("Chord_name");
 			//Parsing chord string into List
 			chord_frets_parsed = new List<int>();
 			string holder = null; //holds 2 digit fret numbers
@@ -50,7 +58,7 @@ namespace Packaged_Database
 				{
 
 					if (holder.Contains("X") | holder.Contains("x"))
-                    {
+					{
 
 
 						chord_frets_parsed.Add(100); // 100 represents X
@@ -58,11 +66,11 @@ namespace Packaged_Database
 
 					}
 					else
-                    {
+					{
 						int holder_int;
 						int.TryParse(holder, out holder_int);
 						chord_frets_parsed.Add(holder_int);
-				
+
 					}
 
 					holder = null;//empty for next go around
@@ -73,19 +81,48 @@ namespace Packaged_Database
 		protected override void OnResume()
 		{
 			base.OnResume();
-			int.TryParse(Intent.Extras.GetString("Chord_pos"), out ChordPos);
 			skiaView_obj.PaintSurface += OnPaintSurface;
 		}
 
 		protected override void OnPause()
 		{
-			
+
 
 			base.OnPause();
 			skiaView_obj.PaintSurface -= OnPaintSurface;
-			
+
 		}
 
+		private SKPath DrawX(SKPoint rel_prt)
+		{
+			int dis_size = 20;
+			var path = new SKPath();
+			path.MoveTo(rel_prt.X - dis_size, rel_prt.Y - dis_size);
+			path.LineTo(dis_size + rel_prt.X, dis_size + rel_prt.Y);
+			path.MoveTo(dis_size + rel_prt.X, rel_prt.Y - dis_size);
+			path.LineTo(rel_prt.X - dis_size, dis_size + rel_prt.Y);
+			return path;
+		}
+
+		private void gen_note_str(out SKPoint[] str_notes, int string_number)
+		{
+			string_number = 6 - string_number; //backwards
+			str_notes = new SKPoint[4];
+			int k = 0;
+			for (int j = string_number; j < (string_number + 1); j++)
+			{
+				float x = (x_start + (space * j));
+
+
+				for (int i = 0; i < 4; i++)
+				{
+					float y = y_start + fret_len_space / 2 + (fret_len_space * i);
+					str_notes[k] = new SKPoint(x, y);
+					k++;
+				}
+			}
+
+		}
 		private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs args)
 		{
 			// the the canvas and properties
@@ -119,8 +156,8 @@ namespace Packaged_Database
 			{
 				Style = SKPaintStyle.Stroke,
 				Color = SKColors.OrangeRed,
-				StrokeWidth = 25, // in dp
-				StrokeCap = SKStrokeCap.Round
+				StrokeWidth = 10, // in dp
+				StrokeCap = SKStrokeCap.Butt,
 			};
 
 			var paint_blue = new SKPaint
@@ -144,18 +181,18 @@ namespace Packaged_Database
 
 
 			// divide the scaled size width into 7 spaces 
-			float space = ((scaledSize.Width) / 7);
-			float string_len = (scaledSize.Height - 60);
-			float fret_len_space = (string_len - 100) / 4;
-			float x_start = space + 25;
-			float y_start = 50;
+			space = ((scaledSize.Width) / 7);
+			x_start = space + 25;
+			y_start = 200;
+			string_len = (scaledSize.Height - y_start / 2);
+			fret_len_space = (string_len - 110) / 4;
 
 
 			// Strings
 			SKPoint[] string_points = new SKPoint[12];
 			for (int i = 0; i < 2; i++)
 			{
-				float y = y_start + (string_len * i) - (y_start * i);
+				float y = y_start + (string_len * i) - (fret_len_space * i);
 
 				for (int j = 0; j < 6; j++)
 				{
@@ -194,106 +231,39 @@ namespace Packaged_Database
 			SKPoint[] str_2 = new SKPoint[4];
 			SKPoint[] str_1 = new SKPoint[4];
 
-			// array iterater
-			int k = 0;
-
-
 			// 6th string E note positions
-			for (int j = 0; j < 1; j++)
-			{
-				float x = (x_start + (space * j));
+			gen_note_str(out str_6, 6);
 
-
-				for (int i = 0; i < 4; i++)
-				{
-					float y = y_start + (y_start) + (fret_len_space * i);
-					str_6[k] = new SKPoint(x, y);
-					k++;
-				}
-			}
-			k = 0;
 			// 5th string A note positions
-			for (int j = 1; j < 2; j++)
-			{
-				float x = (x_start + (space * j));
+			gen_note_str(out str_5, 5);
 
-
-				for (int i = 0; i < 4; i++)
-				{
-					float y = y_start + (y_start) + (fret_len_space * i);
-					str_5[k] = new SKPoint(x, y);
-					k++;
-				}
-			}
-			k = 0;
 			// 4th string D
-			for (int j = 2; j < 3; j++)
-			{
-				float x = (x_start + (space * j));
+			gen_note_str(out str_4, 4);
 
-
-				for (int i = 0; i < 4; i++)
-				{
-					float y = y_start + (y_start) + (fret_len_space * i);
-					str_4[k] = new SKPoint(x, y);
-					k++;
-				}
-			}
-			k = 0;
 			// 3rd string G
-			for (int j = 3; j < 4; j++)
-			{
-				float x = (x_start + (space * j));
+			gen_note_str(out str_3, 3);
 
-
-				for (int i = 0; i < 4; i++)
-				{
-					float y = y_start + (y_start) + (fret_len_space * i);
-					str_3[k] = new SKPoint(x, y);
-					k++;
-				}
-			}
-			k = 0;
 			// 2nd string B
-			for (int j = 4; j < 5; j++)
-			{
-				float x = (x_start + (space * j));
+			gen_note_str(out str_2, 2);
 
-
-				for (int i = 0; i < 4; i++)
-				{
-					float y = y_start + (y_start) + (fret_len_space * i);
-					str_2[k] = new SKPoint(x, y);
-					k++;
-				}
-			}
-			k = 0;
 			// 1st string E
-			for (int j = 5; j < 6; j++)
-			{
-				float x = (x_start + (space * j));
+			gen_note_str(out str_1, 1);
 
 
-				for (int i = 0; i < 4; i++)
-				{
-					float y = y_start + (y_start) + (fret_len_space * i);
-					str_1[k] = new SKPoint(x, y);
-					k++;
-				}
-			}
+
 			// Chord Notes ::::
 			// Converts the chords frets to actual positions on screen
 			// subtracts position - 1 to get relative position 
 			// then adds the relative position to an array
-		
+
 			SKPoint[] chord_prts = new SKPoint[6];
 			for (int i = 0; i < chord_frets_parsed.Count; i++)
 			{
 				// error with larger chords tried ChordPos to solve problem
-				if  (!( chord_frets_parsed[i] >= 100 | chord_frets_parsed[i] <= 0 ))//100 represents "^"
+				if (!(chord_frets_parsed[i] >= 100 | chord_frets_parsed[i] <= 0))//100 represents "^"
 				{
 					int parse_temp = chord_frets_parsed[i];
-					parse_temp = parse_temp  - 1 - ChordPos; // -1 for array
+					parse_temp = parse_temp - 1 - ChordPos; // -1 for array
 
 					switch (i)
 					{
@@ -324,38 +294,46 @@ namespace Packaged_Database
 				else if (chord_frets_parsed[i] <= 100)
 				{
 					SKPoint temp_adj = new SKPoint();
+					SKPath x_path = new SKPath();
+
 
 					switch (i)
 					{
 						case 0:
 							temp_adj = str_6[0];
-							temp_adj.Y = temp_adj.Y - (y_start);
-							canvas.DrawPoint(temp_adj, paint_red);
+							temp_adj.Y = temp_adj.Y - fret_len_space / 2;
+							x_path = DrawX(temp_adj);
+							canvas.DrawPath(x_path, paint_red);
 							break;
 						case 1:
 							temp_adj = str_5[0];
-							temp_adj.Y = temp_adj.Y - (y_start);
-							canvas.DrawPoint(temp_adj, paint_red);
+							temp_adj.Y = temp_adj.Y - fret_len_space / 2;
+							x_path = DrawX(temp_adj);
+							canvas.DrawPath(x_path, paint_red);
 							break;
 						case 2:
 							temp_adj = str_4[0];
-							temp_adj.Y = temp_adj.Y - (y_start);
-							canvas.DrawPoint(temp_adj, paint_red);
+							temp_adj.Y = temp_adj.Y - fret_len_space / 2; ;
+							x_path = DrawX(temp_adj);
+							canvas.DrawPath(x_path, paint_red); ;
 							break;
 						case 3:
 							temp_adj = str_3[0];
-							temp_adj.Y = temp_adj.Y - (y_start);
-							canvas.DrawPoint(temp_adj, paint_red);
+							temp_adj.Y = temp_adj.Y - fret_len_space / 2; ;
+							x_path = DrawX(temp_adj);
+							canvas.DrawPath(x_path, paint_red);
 							break;
 						case 4:
 							temp_adj = str_2[0];
-							temp_adj.Y = temp_adj.Y - (y_start);
-							canvas.DrawPoint(temp_adj, paint_red);
+							temp_adj.Y = temp_adj.Y - fret_len_space / 2; ;
+							x_path = DrawX(temp_adj);
+							canvas.DrawPath(x_path, paint_red);
 							break;
 						case 5:
 							temp_adj = str_1[0];
-							temp_adj.Y = temp_adj.Y - (y_start);
-							canvas.DrawPoint(temp_adj, paint_red);
+							temp_adj.Y = temp_adj.Y - fret_len_space / 2; ;
+							x_path = DrawX(temp_adj);
+							canvas.DrawPath(x_path, paint_red);
 							break;
 						default:
 							System.Console.WriteLine("Exep: More than 6 notes");
@@ -370,9 +348,7 @@ namespace Packaged_Database
 				}
 			}
 			canvas.DrawPoints(SKPointMode.Points, chord_prts, paint_blue);
-
-
-
 		}
+
 	}
 }

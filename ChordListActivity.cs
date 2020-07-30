@@ -43,7 +43,8 @@ namespace Packaged_Database
             Chord c = chord_list[e.Position];
             var intent = new Intent(this, typeof(DrawChordActivity));
             intent.PutExtra("Chord", c.Frets);
-            intent.PutExtra("Chord_pos", c.Position.ToString());
+            intent.PutExtra("Chord_pos", c.Position);
+            intent.PutExtra("Chord_name", c.Name);
             StartActivity(intent);
 
         }

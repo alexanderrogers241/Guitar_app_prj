@@ -18,7 +18,8 @@ namespace Packaged_Database
 		public SKCanvasView skiaView_obj;
 
 		private List<int> chord_frets_parsed;
-		private int ChordPos;
+		private int ChordPos; // used for drawing chord diagram
+		private int Dis_ChordPos; //display pos is 1 higher
 		private string m_ChordName;
 
 
@@ -41,6 +42,7 @@ namespace Packaged_Database
 			// Get Chord from intent
 			string chord_frets = Intent.GetStringExtra("Chord");
 			ChordPos = Intent.GetIntExtra("Chord_pos", 0);
+			Dis_ChordPos = ChordPos + 1;
 			m_ChordName = Intent.GetStringExtra("Chord_name");
 			//Parsing chord string into List
 			chord_frets_parsed = new List<int>();
@@ -201,6 +203,25 @@ namespace Packaged_Database
 
 			// And draw the text
 			canvas.DrawText(m_ChordName, xText, yText, textPaint);
+
+
+			// Adjust TextSize property so text is 95% of screen width
+			textWidth = textPaint.MeasureText(Dis_ChordPos.ToString());
+
+			// 10& of height * (Height for width ratio) 
+			textPaint.TextSize = 0.1f * scaledSize.Height;
+
+			// Find the text bounds
+			textBounds = new SKRect();
+			textPaint.MeasureText(Dis_ChordPos.ToString(), ref textBounds);
+
+			// Calculate offsets to center the text on the screen
+			xText = scaledSize.Width / 9 - textBounds.MidX;
+			yText = scaledSize.Height / 2.5f - textBounds.MidY;
+
+			// And draw the text
+			textPaint.Color = SKColors.Black;
+			canvas.DrawText(Dis_ChordPos.ToString(), xText, yText, textPaint);
 
 
 			// divide the scaled size width into 7 spaces 

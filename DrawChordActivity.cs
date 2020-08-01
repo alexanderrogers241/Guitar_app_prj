@@ -19,7 +19,7 @@ namespace Packaged_Database
 
 		private List<int> chord_frets_parsed;
 		private int ChordPos;
-		private string ChordName;
+		private string m_ChordName;
 
 
 		// Drawing constants
@@ -41,7 +41,7 @@ namespace Packaged_Database
 			// Get Chord from intent
 			string chord_frets = Intent.GetStringExtra("Chord");
 			ChordPos = Intent.GetIntExtra("Chord_pos", 0);
-			ChordName = Intent.GetStringExtra("Chord_name");
+			m_ChordName = Intent.GetStringExtra("Chord_name");
 			//Parsing chord string into List
 			chord_frets_parsed = new List<int>();
 			string holder = null; //holds 2 digit fret numbers
@@ -168,6 +168,16 @@ namespace Packaged_Database
 				StrokeCap = SKStrokeCap.Round
 
 			};
+			// Create an SKPaint object to display the text
+			var textPaint = new SKPaint
+			{
+				Style = SKPaintStyle.Stroke,
+				StrokeWidth = 5,
+				FakeBoldText = true,
+				Color = SKColors.Blue,
+				IsAntialias = true,
+
+			};
 
 			/*
 			 * Coordinates are specified relative to the upper-left corner of the display surface.
@@ -175,9 +185,22 @@ namespace Packaged_Database
 			 * In discussion about graphics, often the mathematical notation (x, y) is used to denote a point. 
 			 * The point (0, 0) is the upper-left corner of the display surface and is often called the origin.
 			 */
+			// Adjust TextSize property so text is 95% of screen width
+			float textWidth = textPaint.MeasureText(m_ChordName);
 
-			// point in the middle
-			SKPoint coordcenter = new SKPoint(scaledSize.Width / 2, (scaledSize.Height) / 2);
+			// 95% of width * (Height for width ratio) 
+			textPaint.TextSize = 0.9f * scaledSize.Width * textPaint.TextSize / textWidth;
+
+			// Find the text bounds
+			SKRect textBounds = new SKRect();
+			textPaint.MeasureText(m_ChordName, ref textBounds);
+
+			// Calculate offsets to center the text on the screen
+			float xText = scaledSize.Width / 2 - textBounds.MidX;
+			float yText = scaledSize.Height / 7 - textBounds.MidY;
+
+			// And draw the text
+			canvas.DrawText(m_ChordName, xText, yText, textPaint);
 
 
 			// divide the scaled size width into 7 spaces 
@@ -186,6 +209,9 @@ namespace Packaged_Database
 			y_start = 200;
 			string_len = (scaledSize.Height - y_start / 2);
 			fret_len_space = (string_len - 110) / 4;
+
+
+
 
 
 			// Strings

@@ -47,16 +47,18 @@ namespace Packaged_Database
 			//Parsing chord string into List
 			chord_frets_parsed = new List<int>();
 			string holder = null; //holds 2 digit fret numbers
+			string db_fseperater = Resources.GetString(Resource.String.comma);
+			char db_s = db_fseperater[0];//converts to char
 			for (int i = 0; i < (int)chord_frets.Length; i++)
 			{
-				if (chord_frets[i] != '^')
+				if (chord_frets[i] != db_s)
 				{
 					holder += chord_frets[i];
 
 				}
 
 
-				if (chord_frets[i] == '^' | i == (chord_frets.Length - 1))
+				if (chord_frets[i] == db_s | i == (chord_frets.Length - 1))
 				{
 
 					if (holder.Contains("X") | holder.Contains("x"))

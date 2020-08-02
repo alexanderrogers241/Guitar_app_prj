@@ -2,4 +2,5 @@
     <string name="app_name">Packaged_Database</string>
     <string name="action_settings">Settings</string>
 	<string name="database_name">ChordDatabase.db</string>
+	<string name="comma">,</string>
 </resources>

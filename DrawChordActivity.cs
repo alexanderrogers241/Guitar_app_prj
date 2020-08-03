@@ -176,8 +176,8 @@ namespace Packaged_Database
 			var textPaint = new SKPaint
 			{
 				Style = SKPaintStyle.Stroke,
-				StrokeWidth = 5,
 				FakeBoldText = true,
+				StrokeWidth = 3f,
 				Color = SKColors.Blue,
 				IsAntialias = true,
 
@@ -193,7 +193,7 @@ namespace Packaged_Database
 			float textWidth = textPaint.MeasureText(m_ChordName);
 
 			// 95% of width * (Height for width ratio) 
-			textPaint.TextSize = 0.9f * scaledSize.Width * textPaint.TextSize / textWidth;
+			textPaint.TextSize = 0.15f * scaledSize.Height;
 
 			// Find the text bounds
 			SKRect textBounds = new SKRect();
@@ -201,7 +201,7 @@ namespace Packaged_Database
 
 			// Calculate offsets to center the text on the screen
 			float xText = scaledSize.Width / 2 - textBounds.MidX;
-			float yText = scaledSize.Height / 7 - textBounds.MidY;
+			float yText = scaledSize.Height / 7.5f - textBounds.MidY;
 
 			// And draw the text
 			canvas.DrawText(m_ChordName, xText, yText, textPaint);
@@ -223,6 +223,7 @@ namespace Packaged_Database
 
 			// And draw the text
 			textPaint.Color = SKColors.Black;
+			textPaint.Style = SKPaintStyle.StrokeAndFill;
 			canvas.DrawText(Dis_ChordPos.ToString(), xText, yText, textPaint);
 
 

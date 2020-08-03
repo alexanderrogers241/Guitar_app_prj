@@ -50,10 +50,10 @@ namespace Packaged_Database
 
 
 		
-		// readStream is the stream you need to read
-		// writeStream is the stream you want to write to
-		// Set our view from the "main" layout resource
-		SetContentView(Resource.Layout.activity_main);
+			// readStream is the stream you need to read
+			// writeStream is the stream you want to write to
+			// Set our view from the "main" layout resource
+			SetContentView(Resource.Layout.activity_main);
 			
 			// Set up objects
 			
@@ -63,7 +63,7 @@ namespace Packaged_Database
 
 			Button_obj.Click += (sender, e) =>
 			{
-				var intent = new Intent(this, typeof(ChordListActivity));
+				var intent = new Intent(this, typeof(ChordListActivity0));
 				StartActivity(intent);
 			};
 

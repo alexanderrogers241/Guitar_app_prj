@@ -13,10 +13,15 @@ external-path;C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\lp\38\
 foreground;obj\Debug\90\res\mipmap-anydpi-v26\ic_launcher.xml
 foreground;obj\Debug\90\res\mipmap-anydpi-v26\ic_launcher_round.xml
 FrameLayout;obj\Debug\90\res\layout\activity_draw.xml
+item;obj\Debug\90\res\values\strings.xml
 item;obj\Debug\90\res\values\styles.xml
-LinearLayout;obj\Debug\90\res\layout\activity_chordlist.xml
+LinearLayout;obj\Debug\90\res\layout\activity_chordlist0.xml
+LinearLayout;obj\Debug\90\res\layout\activity_chordlist1.xml
+LinearLayout;obj\Debug\90\res\layout\activity_chordlist2.xml
 LinearLayout;obj\Debug\90\res\layout\activity_main.xml
-ListView;obj\Debug\90\res\layout\activity_chordlist.xml
+ListView;obj\Debug\90\res\layout\activity_chordlist0.xml
+ListView;obj\Debug\90\res\layout\activity_chordlist1.xml
+ListView;obj\Debug\90\res\layout\activity_chordlist2.xml
 paths;C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\lp\38\jl\res\xml\xamarin_essentials_fileprovider_file_paths.xml
 RelativeLayout;obj\Debug\90\res\layout\taskdetails.xml
 resources;obj\Debug\90\res\values\colors.xml
@@ -26,5 +31,6 @@ resources;obj\Debug\90\res\values\styles.xml
 SkiaSharp.Views.Android.SKCanvasView;obj\Debug\90\res\layout\activity_draw.xml
 SkiaSharp.Views.Android.SKCanvasView;obj\Debug\90\res\layout\activity_main.xml
 string;obj\Debug\90\res\values\strings.xml
+string-array;obj\Debug\90\res\values\strings.xml
 style;obj\Debug\90\res\values\styles.xml
 TextView;obj\Debug\90\res\layout\taskdetails.xml

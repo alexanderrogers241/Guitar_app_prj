@@ -36,6 +36,24 @@ namespace Packaged_Database
             get { return mdbPath; }
             set { mdbPath = value; }
         }
+
+        public IEnumerable<Chord> GetChords(string Chord_group_cat)
+        {
+            // Should only get chords that match the Chord_group_category
+            // pass to this func
+            var db = new SQLiteConnection(path);
+
+            lock (locker)
+            {
+                return (from i in db.Table<Chord>() 
+                        where i.Name.Equals(Chord_group_cat)
+                        select i).ToList();
+            }
+        }
+
+
+
+
         public IEnumerable<Chord> GetChords()
         {
 

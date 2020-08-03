@@ -3,4 +3,20 @@
     <string name="action_settings">Settings</string>
 	<string name="database_name">ChordDatabase.db</string>
 	<string name="comma">,</string>
+	<string-array name="Chords_0">
+		<item>C</item>
+		<item>D</item>
+		<item>E</item>
+		<item>F</item>
+		<item>G</item>
+		<item>A</item>
+		<item>B</item>
+	</string-array>
+	<string-array name="Chords_1">
+		<item></item>
+		<item>7</item>
+		<item>m</item>
+		<item>m7</item>
+		<item>dim7</item>
+	</string-array>
 </resources>

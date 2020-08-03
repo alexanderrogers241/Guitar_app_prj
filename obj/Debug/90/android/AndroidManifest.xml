@@ -6,6 +6,9 @@
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <application android:allowBackup="true" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="true" android:theme="@style/AppTheme" android:name="android.app.Application" android:debuggable="true">
     <activity android:label="ChordListActivity" android:name="crc64ed5fb2d2f81a5bb5.ChordListActivity" />
+    <activity android:label="ChordListActivity0" android:name="crc64ed5fb2d2f81a5bb5.ChordListActivity0" />
+    <activity android:label="ChordListActivity1" android:name="crc64ed5fb2d2f81a5bb5.ChordListActivity1" />
+    <activity android:label="ChordListActivity2" android:name="crc64ed5fb2d2f81a5bb5.ChordListActivity2" />
     <activity android:label="DrawChordActivity" android:name="crc64ed5fb2d2f81a5bb5.DrawChordActivity" />
     <activity android:label="@string/app_name" android:theme="@style/AppTheme" android:name="crc64ed5fb2d2f81a5bb5.MainActivity">
       <intent-filter>

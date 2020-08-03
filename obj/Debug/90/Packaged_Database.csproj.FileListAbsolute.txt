@@ -63,7 +63,6 @@ C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\mipmap-xxxhdpi\i
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\mipmap-xxxhdpi\ic_launcher_round.png
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\layout\taskdetails.xml
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\layout\activity_draw.xml
-C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\layout\activity_chordlist.xml
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\uploadflags.txt
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\resolvedassemblies.hash
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\android\assets\Java.Interop.dll
@@ -293,4 +292,10 @@ C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\stamp\_ConvertResour
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\stamp\_GenerateJavaStubs.stamp
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\stamp\_GeneratePackageManagerJava.stamp
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\stamp\_ResolveLibraryProjectImports.stamp
+C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\android\src\crc64ed5fb2d2f81a5bb5\ChordListActivity0.java
+C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\android\src\crc64ed5fb2d2f81a5bb5\ChordListActivity1.java
+C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\android\src\crc64ed5fb2d2f81a5bb5\ChordListActivity2.java
+C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\layout\activity_chordlist2.xml
+C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\layout\activity_chordlist0.xml
+C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\layout\activity_chordlist1.xml
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\Packaged_Database.csprojAssemblyReference.cache

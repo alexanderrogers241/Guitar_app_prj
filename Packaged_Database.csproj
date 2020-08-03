@@ -62,8 +62,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChordListActivity.cs" />
+    <Compile Include="ChordListActivity0.cs" />
+    <Compile Include="ChordListActivity1.cs" />
+    <Compile Include="ChordListActivity2.cs" />
     <Compile Include="DataBase\Chord.cs" />
-    <Compile Include="DataBase\APK_SQlightDB_Class.cs" />
     <Compile Include="DrawChordActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
@@ -128,7 +130,13 @@
     <AndroidResource Include="Resources\Layout\activity_draw.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Layout\activity_chordlist.xml" />
+    <AndroidResource Include="Resources\Layout\activity_chordlist2.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\activity_chordlist0.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\activity_chordlist1.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

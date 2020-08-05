@@ -190,7 +190,7 @@ namespace Packaged_Database
 			 * The point (0, 0) is the upper-left corner of the display surface and is often called the origin.
 			 */
 			// Adjust TextSize property so text is 95% of screen width
-			float textWidth = textPaint.MeasureText(m_ChordName);
+		
 
 			// 95% of width * (Height for width ratio) 
 			textPaint.TextSize = 0.15f * scaledSize.Height;
@@ -207,10 +207,9 @@ namespace Packaged_Database
 			canvas.DrawText(m_ChordName, xText, yText, textPaint);
 
 
-			// Adjust TextSize property so text is 95% of screen width
-			textWidth = textPaint.MeasureText(Dis_ChordPos.ToString());
+			
 
-			// 10& of height * (Height for width ratio) 
+			// 10& of height
 			textPaint.TextSize = 0.1f * scaledSize.Height;
 
 			// Find the text bounds

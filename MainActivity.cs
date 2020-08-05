@@ -22,6 +22,9 @@ namespace Packaged_Database
 		public Button Button_obj;
 		public SKCanvasView skiaView_obj;
 		public string dbfilename;
+		public string m_app_name;
+
+
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 
@@ -30,7 +33,8 @@ namespace Packaged_Database
 			Xamarin.Essentials.Platform.Init(this, savedInstanceState);
 
 			// get  db file name from strings and get path
-			string dbfilename = Resources.GetString(Resource.String.database_name);
+			m_app_name = Resources.GetString(Resource.String.app_name);
+			dbfilename = Resources.GetString(Resource.String.database_name);
 			string libraryPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 			var path = Path.Combine(libraryPath, dbfilename);
 
@@ -116,15 +120,16 @@ namespace Packaged_Database
 			canvas.Clear(SKColors.White);
 
 			// draw some text
-			var paint = new SKPaint
+			
+			var textPaint = new SKPaint
 			{
-				Color = SKColors.Black,
+				Style = SKPaintStyle.Stroke,
+				FakeBoldText = true,
+				StrokeWidth = 2.2f,
+				Color = SKColors.OrangeRed,
 				IsAntialias = true,
-				Style = SKPaintStyle.Fill,
-				TextAlign = SKTextAlign.Center,
-				TextSize = 24
-			};
 
+			};
 			var paint_red = new SKPaint
 			{
 				Style = SKPaintStyle.Stroke,
@@ -132,19 +137,18 @@ namespace Packaged_Database
 				StrokeWidth = 25
 			};
 
-			var paint_blue = new SKPaint
-			{
-				Style = SKPaintStyle.Fill,
-				Color = SKColors.Blue,
-				StrokeWidth = 25
+			float textWidth = textPaint.MeasureText(m_app_name);
+			textPaint.TextSize = 0.90f * scaledSize.Width *( textPaint.TextSize / textWidth);
+			// Find the text bounds
+			SKRect textBounds = new SKRect();
+			textPaint.MeasureText(m_app_name, ref textBounds);
 
-			};
-			var coord = new SKPoint(scaledSize.Width / 2, (scaledSize.Height + paint.TextSize) / 2);
-			var coord2 = coord;
-			coord2.Y -= 200;
-			canvas.DrawText("SkiaSharp", coord, paint);
-			canvas.DrawCircle(coord2, scaledSize.Width / 4, paint_red);
-			canvas.DrawCircle(coord2, scaledSize.Width / 4, paint_blue);
+			// Calculate offsets to center the text on the screen
+			float xText = scaledSize.Width / 2 - textBounds.MidX;
+			float yText = scaledSize.Height/ 1.2f - textBounds.MidY;
+
+			canvas.DrawText(m_app_name,xText, yText, textPaint);
+			canvas.DrawCircle(scaledSize.Width / 2, scaledSize.Height / 2, scaledSize.Width / 4, paint_red);
 		}
 
 	}

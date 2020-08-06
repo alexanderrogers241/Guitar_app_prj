@@ -29,9 +29,8 @@ namespace Packaged_Database
 		public string m_app_name;
 
 		// for animation
-
-		const double cycleTime = 1000;       // in milliseconds
-		public Stopwatch stopwatch = new Stopwatch();
+		public string m_b_color_hex = "#fffafafa";
+		public Stopwatch stopwatch;
 		public bool pageIsActive;
 		public float t;
 		public float scale;
@@ -39,6 +38,7 @@ namespace Packaged_Database
 		public float scale_slow;
 		public bool m_str_color_growing = true;
 		public bool m_growing = true;
+		public bool clock_set = false;
 
 		// string constants
 
@@ -93,6 +93,7 @@ namespace Packaged_Database
 				StartActivity(intent);
 			};
 
+			stopwatch = new Stopwatch();
 			pageIsActive = true;
 			AnimationLoop();
 
@@ -105,16 +106,19 @@ namespace Packaged_Database
 			while (pageIsActive)
 			{
 				double cycleTime = 15;
-
+				
 				// t varies from 0 to 1. time % cycletime(5) /cycletime(5) ->  (1 to 5)/ cycletime(5) -> 0 to 1 
 				double t = stopwatch.Elapsed.TotalSeconds % cycleTime / cycleTime;
 				double t_s = stopwatch.Elapsed.TotalSeconds % (cycleTime * cycleTime) / (cycleTime + cycleTime);
 				// b/c of modifications the sin wave only varies from 0 to 1
 				scale = (1 + (float)System.Math.Sin((2 * System.Math.PI * t) - (System.Math.PI / 2))) / 2;
 				scale2 = (1 + (float)System.Math.Cos((2 * System.Math.PI * t))) / 2;
+				System.Console.WriteLine("Total seconds {0} Sin {1} Cos {2}", stopwatch.Elapsed.TotalSeconds, scale, scale2);
 				scale_slow = (1 + (float)System.Math.Sin((2 * System.Math.PI * t_s) - (System.Math.PI / 2))) / 2;
 				skiaView_obj.Invalidate();
 				await Task.Delay(TimeSpan.FromSeconds(1.0 / 30));
+				skiaView_obj.Invalidate();
+				clock_set = true; //for a bug with scale 2 starting at 1 causing a later for loop to start early
 			}
 
 			stopwatch.Stop();
@@ -171,15 +175,16 @@ namespace Packaged_Database
 		protected override void OnResume()
 		{
 			base.OnResume();
-
 			skiaView_obj.PaintSurface += OnPaintSurface;
+			
 		}
 
 		protected override void OnPause()
 		{
-			skiaView_obj.PaintSurface -= OnPaintSurface;
-
 			base.OnPause();
+			skiaView_obj.PaintSurface -= OnPaintSurface;
+			pageIsActive = false; // should kill animation loop
+			
 		}
 		// PlaceHolder Logo
 		private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs args)
@@ -201,41 +206,48 @@ namespace Packaged_Database
 			canvas.Scale(scrn_scale);
 
 			// make sure the canvas is blank
-			canvas.Clear(SKColors.White);
+			SKColor b_color = new SKColor();
+			SKColor.TryParse(m_b_color_hex, out b_color);
+			canvas.Clear(b_color);
 
 
 			var paint_red = new SKPaint
 			{
 				Style = SKPaintStyle.Stroke,
 				Color = SKColors.OrangeRed,
-				StrokeWidth = 8, // in dp
+				StrokeWidth = 9.5f, // in dp
 				IsAntialias = true,
 				StrokeCap = SKStrokeCap.Butt
 			};
+			
 
-			var paint_red_g = new SKPaint
+			var paint_red2 = new SKPaint
 			{
 				Style = SKPaintStyle.Stroke,
-				Color = SKColors.OrangeRed.WithAlpha((byte)(255 * scale * .4f)),
-				StrokeWidth = 8, // in dp
+				Color = SKColors.OrangeRed,
+				
+
+				StrokeWidth = 5, // in dp
 				IsAntialias = true,
-				StrokeCap = SKStrokeCap.Butt
+				StrokeCap = SKStrokeCap.Round
 			};
 
 			var paint_black = new SKPaint
 			{
 				Color = new SKColor(0, 0, 0, (byte)(255 * scale2)),
 				Style = SKPaintStyle.Stroke,
-				StrokeWidth = 5, //in dp
+				StrokeWidth = 2.5f, //in dp
 				IsAntialias = true,
+				StrokeCap = SKStrokeCap.Round,
 			};
 
 			var paint_black_ng = new SKPaint
 			{
 				Color = SKColors.Black,
 				Style = SKPaintStyle.Stroke,
-				StrokeWidth = 5, //in dp
+				StrokeWidth = 2.5f, //in dp
 				IsAntialias = true,
+				StrokeCap = SKStrokeCap.Round,
 			};
 
 			SKPoint center = new SKPoint(scaledSize.Width / 2, scaledSize.Height / 2);
@@ -286,7 +298,7 @@ namespace Packaged_Database
 			//draw strings
 
 			// tells strs_color to stop fading in and out
-			if (scale2 > .999)
+			if (scale2 > .999 & clock_set == true)
 			{
 				m_str_color_growing = false;
 			}
@@ -319,27 +331,27 @@ namespace Packaged_Database
 			{
 				if (scale_slow <= 0.17f) //select str 6
 				{
-					canvas.DrawPath(str_6[0], paint_red_g);
+					canvas.DrawPath(str_6[0], paint_red2);
 				}
 				else if (scale_slow <= 0.33f & scale_slow > 0.17f) //select str5
 				{
-					canvas.DrawPath(str_6[5], paint_red_g);
+					canvas.DrawPath(str_6[5], paint_red2);
 				}
 				else if (scale_slow <= 0.50f & scale_slow > 0.33f) // so on....
 				{
-					canvas.DrawPath(str_6[2], paint_red_g);
+					canvas.DrawPath(str_6[2], paint_red2);
 				}
 				else if (scale_slow <= 0.66f & scale_slow > 0.50f)
 				{
-					canvas.DrawPath(str_6[1], paint_red_g);
+					canvas.DrawPath(str_6[1], paint_red2);
 				}
 				else if (scale_slow <= 0.83f & scale_slow > 0.66f)
 				{
-					canvas.DrawPath(str_6[4], paint_red_g);
+					canvas.DrawPath(str_6[4], paint_red2);
 				}
 				else if (scale_slow > 0.83)
 				{
-					canvas.DrawPath(str_6[3], paint_red_g);
+					canvas.DrawPath(str_6[3], paint_red2);
 
 				}
 			}
@@ -363,6 +375,7 @@ namespace Packaged_Database
 			float xText = scaledSize.Width / 2 - textBounds.MidX;
 			float yText = scaledSize.Height / 1.2f - textBounds.MidY;
 			canvas.DrawText(m_app_name, xText, yText, textPaint);
+			System.Console.WriteLine(scale2);
 
 
 

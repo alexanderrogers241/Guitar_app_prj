@@ -106,7 +106,7 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\drawable\" />
+    <AndroidResource Include="Resources\drawable\mybutton2.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SkiaSharp">
@@ -137,6 +137,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\activity_chordlist1.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\mybutton.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

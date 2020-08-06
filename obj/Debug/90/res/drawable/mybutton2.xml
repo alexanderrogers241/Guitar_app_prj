@@ -1,0 +1,1 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android"><item><shape android:shape="rectangle"><solid android:color="@color/material_grey_300" /><!--apply a border around button--><stroke android:color="@color/material_grey_800" android:width="2dp" /><!-- make the button corners rounded--><corners android:radius="75dp" /></shape></item></selector>

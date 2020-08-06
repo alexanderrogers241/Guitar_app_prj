@@ -299,3 +299,5 @@ C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\layout\activity_
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\layout\activity_chordlist0.xml
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\layout\activity_chordlist1.xml
 C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\Packaged_Database.csprojAssemblyReference.cache
+C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\drawable\mybutton.xml
+C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\res\drawable\mybutton2.xml

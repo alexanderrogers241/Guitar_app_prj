@@ -61,7 +61,6 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChordListActivity.cs" />
     <Compile Include="ChordListActivity0.cs" />
     <Compile Include="ChordListActivity1.cs" />
     <Compile Include="ChordListActivity2.cs" />
@@ -77,7 +76,7 @@
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\Raw\ChordDatabase.db" />
+    <AndroidResource Include="Resources\Raw\ChordDatabase2.db" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\activity_main.xml">
@@ -140,6 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\mybutton.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\bools.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

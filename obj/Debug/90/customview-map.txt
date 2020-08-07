@@ -2,6 +2,7 @@ adaptive-icon;obj\Debug\90\res\mipmap-anydpi-v26\ic_launcher.xml
 adaptive-icon;obj\Debug\90\res\mipmap-anydpi-v26\ic_launcher_round.xml
 background;obj\Debug\90\res\mipmap-anydpi-v26\ic_launcher.xml
 background;obj\Debug\90\res\mipmap-anydpi-v26\ic_launcher_round.xml
+bool;obj\Debug\90\res\values\bools.xml
 Button;obj\Debug\90\res\layout\activity_main.xml
 Button;obj\Debug\90\res\layout\taskdetails.xml
 cache-path;C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\lp\38\jl\res\xml\xamarin_essentials_fileprovider_file_paths.xml
@@ -29,6 +30,7 @@ ListView;obj\Debug\90\res\layout\activity_chordlist1.xml
 ListView;obj\Debug\90\res\layout\activity_chordlist2.xml
 paths;C:\Users\alexr\Documents\GitHub\Guitar_app_prj\obj\Debug\90\lp\38\jl\res\xml\xamarin_essentials_fileprovider_file_paths.xml
 RelativeLayout;obj\Debug\90\res\layout\taskdetails.xml
+resources;obj\Debug\90\res\values\bools.xml
 resources;obj\Debug\90\res\values\colors.xml
 resources;obj\Debug\90\res\values\ic_launcher_background.xml
 resources;obj\Debug\90\res\values\strings.xml

@@ -50,8 +50,7 @@ namespace Packaged_Database
             }
 
 			view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = chord_at_pos.Name ;
-			view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = chord_at_pos.ID.ToString() + "::::" + chord_at_pos.Frets;
-
+			view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = ("Position: " + (chord_at_pos.Position + 1));
 
 			//Finally return the view
 			return view;

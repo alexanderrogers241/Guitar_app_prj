@@ -154,6 +154,7 @@ namespace Packaged_Database
 				Color = SKColors.Black,
 				Style = SKPaintStyle.Stroke,
 				StrokeWidth = 10, //in dp
+				IsAntialias = true,
 			};
 
 			var paint_red = new SKPaint
@@ -162,15 +163,17 @@ namespace Packaged_Database
 				Color = SKColors.OrangeRed,
 				StrokeWidth = 10, // in dp
 				StrokeCap = SKStrokeCap.Butt,
+				IsAntialias = true,
 			};
 
 			var paint_blue = new SKPaint
 			{
 				Style = SKPaintStyle.Stroke,
 				Color = SKColors.Blue,
+				
 				StrokeWidth = 35, //in dp
-				StrokeCap = SKStrokeCap.Round
-
+				StrokeCap = SKStrokeCap.Round,
+				IsAntialias = true,
 			};
 			// Create an SKPaint object to display the text
 			var textPaint = new SKPaint
@@ -262,7 +265,7 @@ namespace Packaged_Database
 
 				for (int j = 0; j < 5; j++)
 				{
-					float y = y_start + fret_len_space * j;
+					float y = y_start + (fret_len_space -2.5f) * j; // A slight adj with -2.5
 					fret_points[2 * j + i] = new SKPoint(x, y);
 				}
 			}

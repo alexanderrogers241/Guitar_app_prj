@@ -27,10 +27,12 @@ namespace Packaged_Database
 		public SKCanvasView skiaView_obj;
 		public string dbfilename;
 		public string m_app_name;
+		public bool m_dbchanging;
 
 		// for animation
 		public string m_b_color_hex = "#fffafafa";
-		public Stopwatch stopwatch;
+		public Stopwatch stopwatch; //animation
+		public Stopwatch m_stopwatch_2;
 		public bool pageIsActive;
 		public float t;
 		public float scale;
@@ -56,6 +58,7 @@ namespace Packaged_Database
 
 			// get  db file name from strings and get path
 			m_app_name = Resources.GetString(Resource.String.app_name);
+            m_dbchanging = Resources.GetBoolean(Resource.Boolean.dbchanging);
 			dbfilename = Resources.GetString(Resource.String.database_name);
 			string libraryPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 			var path = Path.Combine(libraryPath, dbfilename);
@@ -66,9 +69,10 @@ namespace Packaged_Database
 			var dbFile = Path.Combine(docFolder, dbfilename); // FILE NAME TO USE WHEN COPIED
 
 
-			if (!System.IO.File.Exists(dbFile))
+			if (!System.IO.File.Exists(dbFile) | m_dbchanging) // if file doesnt exist -> TRUE |OR| if m_dbchanging = true 
+				// This should solve database not updating
 			{
-				var s = Resources.OpenRawResource(Resource.Raw.ChordDatabase);  // DATA FILE RESOURCE ID
+				var s = Resources.OpenRawResource(Resource.Raw.ChordDatabase2);  // DATA FILE RESOURCE ID
 				FileStream writeStream = new FileStream(dbFile, FileMode.OpenOrCreate, FileAccess.Write);
 				ReadWriteStream(s, writeStream);
 			}
@@ -94,6 +98,7 @@ namespace Packaged_Database
 			};
 
 			stopwatch = new Stopwatch();
+			m_stopwatch_2 = new Stopwatch();
 			pageIsActive = true;
 			AnimationLoop();
 
@@ -227,7 +232,7 @@ namespace Packaged_Database
 				Color = SKColors.OrangeRed,
 				
 
-				StrokeWidth = 5, // in dp
+				StrokeWidth = 3, // in dp
 				IsAntialias = true,
 				StrokeCap = SKStrokeCap.Round
 			};
@@ -255,8 +260,8 @@ namespace Packaged_Database
 			//const for strs
 			m_x_start_pad = center.X / 1.3f;
 			m_x_str_space = (scaledSize.Width - (2 * m_x_start_pad)) / 5;
-			m_y_start_pad = center.Y / 6;
-			m_y_str_len = (scaledSize.Height / 1.2f) - m_y_start_pad;
+			m_y_start_pad = center.Y / 2;
+			m_y_str_len = (scaledSize.Height/1.3f) ;
 
 			//calculate and generate str paths
 			SKPath[] str_6 = new SKPath[6];
@@ -329,32 +334,61 @@ namespace Packaged_Database
 
 			if (m_str_color_growing == false)
 			{
-				if (scale_slow <= 0.17f) //select str 6
-				{
-					canvas.DrawPath(str_6[0], paint_red2);
+
+
+				m_stopwatch_2.Start();
+
+
+
+
+
+
+                if (m_stopwatch_2.Elapsed.TotalSeconds <= .5) 
+                {
+					for (int i = 0; i < 1; i++)
+                    {
+					 canvas.DrawPath(str_6[i], paint_red2);
+					}
+                    
+                }
+                else if (m_stopwatch_2.Elapsed.TotalSeconds > .5 & m_stopwatch_2.Elapsed.TotalSeconds <= 1.0f) 
+                {
+					for (int i = 0; i < 2; i++)
+					{
+						canvas.DrawPath(str_6[i], paint_red2);
+					}
 				}
-				else if (scale_slow <= 0.33f & scale_slow > 0.17f) //select str5
-				{
-					canvas.DrawPath(str_6[5], paint_red2);
+                else if (m_stopwatch_2.Elapsed.TotalSeconds > 1.0f & m_stopwatch_2.Elapsed.TotalSeconds <= 1.5f) 
+                {
+					for (int i = 0; i < 3; i++)
+					{
+						canvas.DrawPath(str_6[i], paint_red2);
+					}
 				}
-				else if (scale_slow <= 0.50f & scale_slow > 0.33f) // so on....
-				{
-					canvas.DrawPath(str_6[2], paint_red2);
+                else if (m_stopwatch_2.Elapsed.TotalSeconds > 1.5f & m_stopwatch_2.Elapsed.TotalSeconds <= 2.0f)
+                {
+					for(int i = 0; i < 4; i++)
+					{
+						canvas.DrawPath(str_6[i], paint_red2);
+					}
 				}
-				else if (scale_slow <= 0.66f & scale_slow > 0.50f)
-				{
-					canvas.DrawPath(str_6[1], paint_red2);
+                else if (m_stopwatch_2.Elapsed.TotalSeconds > 2.0f & m_stopwatch_2.Elapsed.TotalSeconds <= 2.5f)
+                {
+					for (int i = 0; i < 5; i++)
+					{
+						canvas.DrawPath(str_6[i], paint_red2);
+					}
 				}
-				else if (scale_slow <= 0.83f & scale_slow > 0.66f)
-				{
-					canvas.DrawPath(str_6[4], paint_red2);
-				}
-				else if (scale_slow > 0.83)
-				{
-					canvas.DrawPath(str_6[3], paint_red2);
+                else if (m_stopwatch_2.Elapsed.TotalSeconds > 2.5f)
+                {
+					for (int i = 0; i < 6; i++)
+					{
+						canvas.DrawPath(str_6[i], paint_red2);
+					}
 
 				}
-			}
+				
+            }
 
 			// app name
 

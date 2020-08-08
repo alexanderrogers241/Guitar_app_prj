@@ -22,25 +22,25 @@ namespace Packaged_Database
 	{
 
 		// global android obj
-		public SQlightDB_Class db_obj;
-		public Button Button_obj;
-		public SKCanvasView skiaView_obj;
-		public string dbfilename;
+		public SQlightDB_Class m_db_obj;
+		public Button m_Button_obj;
+		public SKCanvasView m_skiaView_obj;
+		public string m_dbfilename;
 		public string m_app_name;
 		public bool m_dbchanging;
 
 		// for animation
 		public string m_b_color_hex = "#fffafafa";
-		public Stopwatch stopwatch; //animation
-		public Stopwatch m_stopwatch_2;
-		public bool pageIsActive;
-		public float t;
-		public float scale;
-		public float scale2;
-		public float scale_slow;
+		public Stopwatch m_stopwatch; //animation
+		public Stopwatch m_stopwatch_2; // string animation
+		public bool m_pageIsActive;
+		public float m_t;
+		public float m_scale;
+		public float m_scale2;
+		public float m_scale_slow;
 		public bool m_str_color_growing = true;
 		public bool m_growing = true;
-		public bool clock_set = false;
+		public bool m_clock_set = false;
 
 		// string constants
 
@@ -58,15 +58,19 @@ namespace Packaged_Database
 
 			// get  db file name from strings and get path
 			m_app_name = Resources.GetString(Resource.String.app_name);
+			// m_dbchanging lets us update the database. The program overwrites the database each time run. On release this will be false. 
             m_dbchanging = Resources.GetBoolean(Resource.Boolean.dbchanging);
-			dbfilename = Resources.GetString(Resource.String.database_name);
+			m_dbfilename = Resources.GetString(Resource.String.database_name);
+
+
+			// create database file path in the android file system
 			string libraryPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-			var path = Path.Combine(libraryPath, dbfilename);
+			var path = Path.Combine(libraryPath, m_dbfilename);
 
 			//
 			var docFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 			Console.WriteLine("Data path:" + path);
-			var dbFile = Path.Combine(docFolder, dbfilename); // FILE NAME TO USE WHEN COPIED
+			var dbFile = Path.Combine(docFolder, m_dbfilename); // FILE NAME TO USE WHEN COPIED
 
 
 			if (!System.IO.File.Exists(dbFile) | m_dbchanging) // if file doesnt exist -> TRUE |OR| if m_dbchanging = true 
@@ -87,46 +91,46 @@ namespace Packaged_Database
 			
 			// Set up objects
 			
-			skiaView_obj = FindViewById<SKCanvasView>(Resource.Id.SKIAVIEW_MAIN);
-			Button_obj = FindViewById<Button>(Resource.Id.BUTTON_CHORDLIST);
+			m_skiaView_obj = FindViewById<SKCanvasView>(Resource.Id.SKIAVIEW_MAIN);
+			m_Button_obj = FindViewById<Button>(Resource.Id.BUTTON_CHORDLIST);
 			// Set up events
 
-			Button_obj.Click += (sender, e) =>
+			m_Button_obj.Click += (sender, e) =>
 			{
 				var intent = new Intent(this, typeof(ChordListActivity0));
 				StartActivity(intent);
 			};
 
-			stopwatch = new Stopwatch();
+			m_stopwatch = new Stopwatch();
 			m_stopwatch_2 = new Stopwatch();
-			pageIsActive = true;
+			m_pageIsActive = true;
 			AnimationLoop();
 
 		}
 
 		async Task AnimationLoop()
 		{
-			stopwatch.Start();
+			m_stopwatch.Start();
 
-			while (pageIsActive)
+			while (m_pageIsActive)
 			{
 				double cycleTime = 15;
 				
-				// t varies from 0 to 1. time % cycletime(5) /cycletime(5) ->  (1 to 5)/ cycletime(5) -> 0 to 1 
-				double t = stopwatch.Elapsed.TotalSeconds % cycleTime / cycleTime;
-				double t_s = stopwatch.Elapsed.TotalSeconds % (cycleTime * cycleTime) / (cycleTime + cycleTime);
+				// m_t varies from 0 to 1. time % cycletime(5) /cycletime(5) ->  (1 to 5)/ cycletime(5) -> 0 to 1 
+				double m_t = m_stopwatch.Elapsed.TotalSeconds % cycleTime / cycleTime;
+				double t_s = m_stopwatch.Elapsed.TotalSeconds % (cycleTime * cycleTime) / (cycleTime + cycleTime);
 				// b/c of modifications the sin wave only varies from 0 to 1
-				scale = (1 + (float)System.Math.Sin((2 * System.Math.PI * t) - (System.Math.PI / 2))) / 2;
-				scale2 = (1 + (float)System.Math.Cos((2 * System.Math.PI * t))) / 2;
-				System.Console.WriteLine("Total seconds {0} Sin {1} Cos {2}", stopwatch.Elapsed.TotalSeconds, scale, scale2);
-				scale_slow = (1 + (float)System.Math.Sin((2 * System.Math.PI * t_s) - (System.Math.PI / 2))) / 2;
-				skiaView_obj.Invalidate();
+				m_scale = (1 + (float)System.Math.Sin((2 * System.Math.PI * m_t) - (System.Math.PI / 2))) / 2;
+				m_scale2 = (1 + (float)System.Math.Cos((2 * System.Math.PI * m_t))) / 2;
+				System.Console.WriteLine("Total seconds {0} Sin {1} Cos {2}", m_stopwatch.Elapsed.TotalSeconds, m_scale, m_scale2);
+				m_scale_slow = (1 + (float)System.Math.Sin((2 * System.Math.PI * t_s) - (System.Math.PI / 2))) / 2;
+				m_skiaView_obj.Invalidate();
 				await Task.Delay(TimeSpan.FromSeconds(1.0 / 30));
-				skiaView_obj.Invalidate();
-				clock_set = true; //for a bug with scale 2 starting at 1 causing a later for loop to start early
+				m_skiaView_obj.Invalidate();
+				m_clock_set = true; //for a bug with m_scale 2 starting at 1 causing a later for loop to start early
 			}
 
-			stopwatch.Stop();
+			m_stopwatch.Stop();
 		}
 
 		private void gen_strs(out SKPath[] strs) // might want to add this to chorddraw activity. Its different.
@@ -180,15 +184,15 @@ namespace Packaged_Database
 		protected override void OnResume()
 		{
 			base.OnResume();
-			skiaView_obj.PaintSurface += OnPaintSurface;
+			m_skiaView_obj.PaintSurface += OnPaintSurface;
 			
 		}
 
 		protected override void OnPause()
 		{
 			base.OnPause();
-			skiaView_obj.PaintSurface -= OnPaintSurface;
-			pageIsActive = false; // should kill animation loop
+			m_skiaView_obj.PaintSurface -= OnPaintSurface;
+			m_pageIsActive = false; // should kill animation loop
 			
 		}
 		// PlaceHolder Logo
@@ -210,7 +214,7 @@ namespace Packaged_Database
 			// handle the device screen density
 			canvas.Scale(scrn_scale);
 
-			// make sure the canvas is blank
+			// makes background colors match
 			SKColor b_color = new SKColor();
 			SKColor.TryParse(m_b_color_hex, out b_color);
 			canvas.Clear(b_color);
@@ -232,14 +236,14 @@ namespace Packaged_Database
 				Color = SKColors.OrangeRed,
 				
 
-				StrokeWidth = 3, // in dp
+				StrokeWidth = 4.5f, // in dp
 				IsAntialias = true,
 				StrokeCap = SKStrokeCap.Round
 			};
 
 			var paint_black = new SKPaint
 			{
-				Color = new SKColor(0, 0, 0, (byte)(255 * scale2)),
+				Color = new SKColor(0, 0, 0, (byte)(255 * m_scale2)),
 				Style = SKPaintStyle.Stroke,
 				StrokeWidth = 2.5f, //in dp
 				IsAntialias = true,
@@ -273,20 +277,20 @@ namespace Packaged_Database
 			float baseRadius = System.Math.Min(scaledSize.Width, scaledSize.Height) / 16;
 
 			// controlls whether to draw a static circle or not
-			if (scale > .999)
+			if (m_scale > .999)
 			{
 				m_growing = false;
 			}
 
 
-			for (int circle = 0; circle < 4; circle++)
+			for (int circle = 0; circle < 2; circle++)
 			{
-				float radius = baseRadius * (circle + t);
+				float radius = baseRadius * (4*(circle + m_t));
 
 
 				if (m_growing)
 				{
-					canvas.DrawCircle(center.X, center.Y * scale, radius * scale, paint_red);
+					canvas.DrawCircle(center.X, center.Y * m_scale, radius * m_scale, paint_red);
 				}
 				else
 				{
@@ -303,7 +307,7 @@ namespace Packaged_Database
 			//draw strings
 
 			// tells strs_color to stop fading in and out
-			if (scale2 > .999 & clock_set == true)
+			if (m_scale2 > .999 & m_clock_set == true)
 			{
 				m_str_color_growing = false;
 			}
@@ -409,7 +413,7 @@ namespace Packaged_Database
 			float xText = scaledSize.Width / 2 - textBounds.MidX;
 			float yText = scaledSize.Height / 1.2f - textBounds.MidY;
 			canvas.DrawText(m_app_name, xText, yText, textPaint);
-			System.Console.WriteLine(scale2);
+			System.Console.WriteLine(m_scale2);
 
 
 

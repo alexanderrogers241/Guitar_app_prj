@@ -58,18 +58,16 @@ namespace Packaged_Database
 
 			// get  db file name from strings and get path
 			m_app_name = Resources.GetString(Resource.String.app_name);
+			m_dbfilename = Resources.GetString(Resource.String.database_name);
 			// m_dbchanging lets us update the database. The program overwrites the database each time run. On release this will be false. 
             m_dbchanging = Resources.GetBoolean(Resource.Boolean.dbchanging);
-			m_dbfilename = Resources.GetString(Resource.String.database_name);
+			
 
 
-			// create database file path in the android file system
-			string libraryPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-			var path = Path.Combine(libraryPath, m_dbfilename);
+			
 
-			//
+			// creates the Path for the local android file system
 			var docFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-			Console.WriteLine("Data path:" + path);
 			var dbFile = Path.Combine(docFolder, m_dbfilename); // FILE NAME TO USE WHEN COPIED
 
 
@@ -82,28 +80,30 @@ namespace Packaged_Database
 			}
 
 
-
-		
 			// readStream is the stream you need to read
 			// writeStream is the stream you want to write to
 			// Set our view from the "main" layout resource
+
+
 			SetContentView(Resource.Layout.activity_main);
 			
 			// Set up objects
 			
 			m_skiaView_obj = FindViewById<SKCanvasView>(Resource.Id.SKIAVIEW_MAIN);
 			m_Button_obj = FindViewById<Button>(Resource.Id.BUTTON_CHORDLIST);
-			// Set up events
+			m_stopwatch = new Stopwatch();
+			m_stopwatch_2 = new Stopwatch();
+			m_pageIsActive = true;
 
+			// Set up events
+			// On click displays a list of notes that chords are based on
 			m_Button_obj.Click += (sender, e) =>
 			{
 				var intent = new Intent(this, typeof(ChordListActivity0));
 				StartActivity(intent);
 			};
 
-			m_stopwatch = new Stopwatch();
-			m_stopwatch_2 = new Stopwatch();
-			m_pageIsActive = true;
+			// Starts animation loop 
 			AnimationLoop();
 
 		}
@@ -114,6 +114,8 @@ namespace Packaged_Database
 
 			while (m_pageIsActive)
 			{
+
+				// Bug when cycletime is increased. Makes animations mess up.
 				double cycleTime = 15;
 				
 				// m_t varies from 0 to 1. time % cycletime(5) /cycletime(5) ->  (1 to 5)/ cycletime(5) -> 0 to 1 
@@ -122,10 +124,11 @@ namespace Packaged_Database
 				// b/c of modifications the sin wave only varies from 0 to 1
 				m_scale = (1 + (float)System.Math.Sin((2 * System.Math.PI * m_t) - (System.Math.PI / 2))) / 2;
 				m_scale2 = (1 + (float)System.Math.Cos((2 * System.Math.PI * m_t))) / 2;
+				// For debugging
 				System.Console.WriteLine("Total seconds {0} Sin {1} Cos {2}", m_stopwatch.Elapsed.TotalSeconds, m_scale, m_scale2);
 				m_scale_slow = (1 + (float)System.Math.Sin((2 * System.Math.PI * t_s) - (System.Math.PI / 2))) / 2;
-				m_skiaView_obj.Invalidate();
 				await Task.Delay(TimeSpan.FromSeconds(1.0 / 30));
+				// makes the canvas redraw itself
 				m_skiaView_obj.Invalidate();
 				m_clock_set = true; //for a bug with m_scale 2 starting at 1 causing a later for loop to start early
 			}
@@ -220,6 +223,8 @@ namespace Packaged_Database
 			canvas.Clear(b_color);
 
 
+
+			// define all paints
 			var paint_red = new SKPaint
 			{
 				Style = SKPaintStyle.Stroke,
@@ -272,7 +277,7 @@ namespace Packaged_Database
 
 			gen_strs(out str_6);
 
-			// Caculate circle and draw
+			// Caculate circle 
 
 			float baseRadius = System.Math.Min(scaledSize.Width, scaledSize.Height) / 16;
 
@@ -282,7 +287,7 @@ namespace Packaged_Database
 				m_growing = false;
 			}
 
-
+			// draw circle
 			for (int circle = 0; circle < 2; circle++)
 			{
 				float radius = baseRadius * (4*(circle + m_t));
@@ -290,10 +295,14 @@ namespace Packaged_Database
 
 				if (m_growing)
 				{
+
+					//animated circle
 					canvas.DrawCircle(center.X, center.Y * m_scale, radius * m_scale, paint_red);
 				}
 				else
 				{
+
+					// static circle
 					canvas.DrawCircle(center.X, center.Y, radius, paint_red);
 				}
 
@@ -304,14 +313,14 @@ namespace Packaged_Database
 
 
 
-			//draw strings
+			
 
 			// tells strs_color to stop fading in and out
 			if (m_scale2 > .999 & m_clock_set == true)
 			{
 				m_str_color_growing = false;
 			}
-
+				//draw strings
 			if (m_growing == false)
 			{
 
@@ -319,6 +328,7 @@ namespace Packaged_Database
 				{
 					foreach (var str in str_6)
 					{
+						//animated strings
 						canvas.DrawPath(str, paint_black);
 
 					}
@@ -327,6 +337,7 @@ namespace Packaged_Database
 				{
 					foreach (var str in str_6)
 					{
+						//static strings
 						canvas.DrawPath(str, paint_black_ng);
 
 					}
@@ -335,6 +346,8 @@ namespace Packaged_Database
 
 			}
 
+
+			// making the strings change color
 
 			if (m_str_color_growing == false)
 			{
@@ -345,7 +358,7 @@ namespace Packaged_Database
 
 
 
-
+				// string changes color at increments of 1/2 s
 
                 if (m_stopwatch_2.Elapsed.TotalSeconds <= .5) 
                 {
@@ -405,6 +418,8 @@ namespace Packaged_Database
 				IsAntialias = true,
 			};
 			float textWidth = textPaint.MeasureText(m_app_name);
+			// .9 * width * ratio(height/width)   
+			// gives you the height for a given width
 			textPaint.TextSize = 0.90f * scaledSize.Width * (textPaint.TextSize / textWidth);
 			// Find the text bounds
 			SKRect textBounds = new SKRect();

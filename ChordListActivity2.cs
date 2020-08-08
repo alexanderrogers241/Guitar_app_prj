@@ -28,6 +28,7 @@ namespace Packaged_Database
 
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_chordlist2);
+            //get the chord selected on previous listview
             m_ChordGrpCat = Intent.GetStringExtra("Chord");
             //set up datbase
             m_dbfilename = Resources.GetString(Resource.String.database_name);
@@ -39,10 +40,12 @@ namespace Packaged_Database
 
 
 
-
+            // pass the list to the new listview
             m_chordlist_adp = new ChordListAdapter(this, m_chord_list);
             m_ChordListView = FindViewById<ListView>(Resource.Id.CHORDLIST2);
             m_ChordListView.Adapter = m_chordlist_adp;
+
+
             m_ChordListView.ItemClick += OnListItemClick;
 
 
@@ -56,6 +59,7 @@ namespace Packaged_Database
             intent.PutExtra("Chord", c.Frets);
             intent.PutExtra("Chord_pos", c.Position);
             intent.PutExtra("Chord_name", c.Name);
+            // sends the selected chord information to be drawn
             StartActivity(intent);
         }
 

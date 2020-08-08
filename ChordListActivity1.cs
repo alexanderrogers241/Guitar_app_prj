@@ -15,10 +15,15 @@ namespace Packaged_Database
     [Activity(Label = "ChordListActivity1")]
     public class ChordListActivity1 : Activity
     {
-        public string[] Chords_1;
-        public ArrayAdapter<String> ListAdapter;
-        public ListView listview;
+
+
+        // objs
+        public ArrayAdapter<String> m_ListAdapter;
+        public ListView m_listview;
+
+        // constants
         public string m_ChordGroup;
+        public string[] m_Chords_1;
         protected override void OnCreate(Bundle savedInstanceState)
         {
 
@@ -26,19 +31,26 @@ namespace Packaged_Database
             m_ChordGroup = Intent.GetStringExtra("Chord");
             SetContentView(Resource.Layout.activity_chordlist1);
 
+            // gets chord suffixes
+            m_Chords_1 = Resources.GetStringArray(Resource.Array.Chords_1);
 
-            Chords_1 = Resources.GetStringArray(Resource.Array.Chords_1);
 
-            for (int i = 0; i < Chords_1.Length; i++)
+            // attaches them to the end of the note selected previously
+            for (int i = 0; i < m_Chords_1.Length; i++)
             {
-                Chords_1[i] = m_ChordGroup + Chords_1[i]; // adds the chord name selected to all suffixes
+                m_Chords_1[i] = m_ChordGroup + m_Chords_1[i]; // adds the chord name selected to all suffixes
 
             }
 
-            listview = FindViewById<ListView>(Resource.Id.CHORDLIST1);
-            ListAdapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, Chords_1);
-            listview.Adapter = ListAdapter;
-            listview.ItemClick += OnListItemClick;
+
+            // passes list to next listview
+            m_listview = FindViewById<ListView>(Resource.Id.CHORDLIST1);
+            m_ListAdapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, m_Chords_1);
+            m_listview.Adapter = m_ListAdapter;
+
+
+            
+            m_listview.ItemClick += OnListItemClick;
 
 
 
@@ -46,9 +58,10 @@ namespace Packaged_Database
 
         private void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            string c = Chords_1[e.Position];
+            string c = m_Chords_1[e.Position];
             var intent = new Intent(this, typeof(ChordListActivity2));
             intent.PutExtra("Chord", c);
+            // sends name to next listview
             StartActivity(intent);
         }
     }

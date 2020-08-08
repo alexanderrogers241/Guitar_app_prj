@@ -15,21 +15,24 @@ namespace Packaged_Database
     [Activity(Label = "ChordListActivity0")]
     public class ChordListActivity0 : Activity
     {
-        public string[] Chords_0;
-        public ArrayAdapter<String> ListAdapter;
-        public ListView listview;
+        public string[] m_Chords_0;
+        public ArrayAdapter<String> m_ListAdapter;
+        public ListView m_listview;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             
             base.OnCreate(savedInstanceState);
-
             SetContentView(Resource.Layout.activity_chordlist0);
-            Chords_0 = Resources.GetStringArray(Resource.Array.Chords_0);
 
-            listview = FindViewById<ListView>(Resource.Id.CHORDLIST0);
-            ListAdapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, Chords_0);
-            listview.Adapter = ListAdapter;
-            listview.ItemClick += OnListItemClick;
+            // get basic 7 notes chords are based off of
+            m_Chords_0 = Resources.GetStringArray(Resource.Array.Chords_0);
+            // pass list to listview
+            m_listview = FindViewById<ListView>(Resource.Id.CHORDLIST0);
+            m_ListAdapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, m_Chords_0);
+            m_listview.Adapter = m_ListAdapter;
+
+
+            m_listview.ItemClick += OnListItemClick;
 
 
 
@@ -37,9 +40,10 @@ namespace Packaged_Database
 
         private void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            string c = Chords_0[e.Position];
+            string c = m_Chords_0[e.Position];
             var intent = new Intent(this, typeof(ChordListActivity1));
             intent.PutExtra("Chord", c);
+            // passes note to next activity
             StartActivity(intent);
         }
     }

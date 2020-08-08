@@ -15,37 +15,41 @@ namespace Packaged_Database
 	[Activity(Label = "DrawChordActivity")]
 	public class DrawChordActivity : Activity
 	{
-		public SKCanvasView skiaView_obj;
 
-		private List<int> chord_frets_parsed;
-		private int ChordPos; // used for drawing chord diagram
-		private int Dis_ChordPos; //display pos is 1 higher
+		// obj
+		public SKCanvasView m_skiaView_obj;
+
+
+		// containers and constants
+		private List<int> m_chord_frets_parsed;
+		private int m_ChordPos; // used for drawing chord diagram
+		private int m_Dis_ChordPos; //display pos is 1 higher
 		private string m_ChordName;
 
 
 		// Drawing constants
-		private float space;
-		private float x_start;
-		private float y_start;
-		private float string_len;
-		private float fret_len_space;
+		private float m_space;
+		private float m_x_start;
+		private float m_y_start;
+		private float m_string_len;
+		private float m_fret_len_space;
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.activity_draw);
 			//set up objs
-			skiaView_obj = FindViewById<SKCanvasView>(Resource.Id.SKIAVIEW_DRAW);
+			m_skiaView_obj = FindViewById<SKCanvasView>(Resource.Id.SKIAVIEW_DRAW);
 
 
 
 
 			// Get Chord from intent
 			string chord_frets = Intent.GetStringExtra("Chord");
-			ChordPos = Intent.GetIntExtra("Chord_pos", 0);
-			Dis_ChordPos = ChordPos + 1;
+			m_ChordPos = Intent.GetIntExtra("Chord_pos", 0);
+			m_Dis_ChordPos = m_ChordPos + 1;
 			m_ChordName = Intent.GetStringExtra("Chord_name");
 			//Parsing chord string into List
-			chord_frets_parsed = new List<int>();
+			m_chord_frets_parsed = new List<int>();
 			string holder = null; //holds 2 digit fret numbers
 			string db_fseperater = Resources.GetString(Resource.String.comma);
 			char db_s = db_fseperater[0];//converts to char
@@ -65,7 +69,7 @@ namespace Packaged_Database
 					{
 
 
-						chord_frets_parsed.Add(100); // 100 represents X
+						m_chord_frets_parsed.Add(100); // 100 represents X
 
 
 					}
@@ -73,7 +77,7 @@ namespace Packaged_Database
 					{
 						int holder_int;
 						int.TryParse(holder, out holder_int);
-						chord_frets_parsed.Add(holder_int);
+						m_chord_frets_parsed.Add(holder_int);
 
 					}
 
@@ -85,7 +89,7 @@ namespace Packaged_Database
 		protected override void OnResume()
 		{
 			base.OnResume();
-			skiaView_obj.PaintSurface += OnPaintSurface;
+			m_skiaView_obj.PaintSurface += OnPaintSurface;
 		}
 
 		protected override void OnPause()
@@ -93,7 +97,7 @@ namespace Packaged_Database
 
 
 			base.OnPause();
-			skiaView_obj.PaintSurface -= OnPaintSurface;
+			m_skiaView_obj.PaintSurface -= OnPaintSurface;
 
 		}
 
@@ -115,12 +119,12 @@ namespace Packaged_Database
 			int k = 0;
 			for (int j = string_number; j < (string_number + 1); j++)
 			{
-				float x = (x_start + (space * j));
+				float x = (m_x_start + (m_space * j));
 
 
 				for (int i = 0; i < 4; i++)
 				{
-					float y = y_start + fret_len_space / 2 + (fret_len_space * i);
+					float y = m_y_start + m_fret_len_space / 2 + (m_fret_len_space * i);
 					str_notes[k] = new SKPoint(x, y);
 					k++;
 				}
@@ -217,7 +221,7 @@ namespace Packaged_Database
 
 			// Find the text bounds
 			textBounds = new SKRect();
-			textPaint.MeasureText(Dis_ChordPos.ToString(), ref textBounds);
+			textPaint.MeasureText(m_Dis_ChordPos.ToString(), ref textBounds);
 
 			// Calculate offsets to center the text on the screen
 			xText = scaledSize.Width / 9 - textBounds.MidX;
@@ -226,15 +230,15 @@ namespace Packaged_Database
 			// And draw the text
 			textPaint.Color = SKColors.Black;
 			textPaint.Style = SKPaintStyle.StrokeAndFill;
-			canvas.DrawText(Dis_ChordPos.ToString(), xText, yText, textPaint);
+			canvas.DrawText(m_Dis_ChordPos.ToString(), xText, yText, textPaint);
 
 
 			// divide the scaled size width into 7 spaces 
-			space = ((scaledSize.Width) / 7);
-			x_start = space + 25;
-			y_start = 200;
-			string_len = (scaledSize.Height - y_start / 2);
-			fret_len_space = (string_len - 110) / 4;
+			m_space = ((scaledSize.Width) / 7);
+			m_x_start = m_space + 25;
+			m_y_start = 200;
+			m_string_len = (scaledSize.Height - m_y_start / 2);
+			m_fret_len_space = (m_string_len - 110) / 4;
 
 
 
@@ -244,11 +248,11 @@ namespace Packaged_Database
 			SKPoint[] string_points = new SKPoint[12];
 			for (int i = 0; i < 2; i++)
 			{
-				float y = y_start + (string_len * i) - (fret_len_space * i);
+				float y = m_y_start + (m_string_len * i) - (m_fret_len_space * i);
 
 				for (int j = 0; j < 6; j++)
 				{
-					float x = x_start + space * j;
+					float x = m_x_start + m_space * j;
 					string_points[2 * j + i] = new SKPoint(x, y);
 				}
 			}
@@ -261,11 +265,11 @@ namespace Packaged_Database
 			SKPoint[] fret_points = new SKPoint[10];
 			for (int i = 0; i < 2; i++)
 			{
-				float x = (x_start + (5 * space * i));
+				float x = (m_x_start + (5 * m_space * i));
 
 				for (int j = 0; j < 5; j++)
 				{
-					float y = y_start + (fret_len_space -2.5f) * j; // A slight adj with -2.5
+					float y = m_y_start + (m_fret_len_space -2.5f) * j; // A slight adj with -2.5
 					fret_points[2 * j + i] = new SKPoint(x, y);
 				}
 			}
@@ -309,13 +313,13 @@ namespace Packaged_Database
 			// then adds the relative position to an array
 
 			SKPoint[] chord_prts = new SKPoint[6];
-			for (int i = 0; i < chord_frets_parsed.Count; i++)
+			for (int i = 0; i < m_chord_frets_parsed.Count; i++)
 			{
-				// error with larger chords tried ChordPos to solve problem
-				if (!(chord_frets_parsed[i] >= 100 | chord_frets_parsed[i] <= 0))//100 represents "^"
+				// error with larger chords tried m_ChordPos to solve problem
+				if (!(m_chord_frets_parsed[i] >= 100 | m_chord_frets_parsed[i] <= 0))//100 represents "^"
 				{
-					int parse_temp = chord_frets_parsed[i];
-					parse_temp = parse_temp - 1 - ChordPos; // -1 for array
+					int parse_temp = m_chord_frets_parsed[i];
+					parse_temp = parse_temp - 1 - m_ChordPos; // -1 for array
 
 					switch (i)
 					{
@@ -343,7 +347,7 @@ namespace Packaged_Database
 					}
 
 				}
-				else if (chord_frets_parsed[i] <= 100)
+				else if (m_chord_frets_parsed[i] <= 100)
 				{
 					SKPoint temp_adj = new SKPoint();
 					SKPath x_path = new SKPath();
@@ -353,37 +357,37 @@ namespace Packaged_Database
 					{
 						case 0:
 							temp_adj = str_6[0];
-							temp_adj.Y = temp_adj.Y - fret_len_space / 2;
+							temp_adj.Y = temp_adj.Y - m_fret_len_space / 2;
 							x_path = DrawX(temp_adj);
 							canvas.DrawPath(x_path, paint_red);
 							break;
 						case 1:
 							temp_adj = str_5[0];
-							temp_adj.Y = temp_adj.Y - fret_len_space / 2;
+							temp_adj.Y = temp_adj.Y - m_fret_len_space / 2;
 							x_path = DrawX(temp_adj);
 							canvas.DrawPath(x_path, paint_red);
 							break;
 						case 2:
 							temp_adj = str_4[0];
-							temp_adj.Y = temp_adj.Y - fret_len_space / 2; ;
+							temp_adj.Y = temp_adj.Y - m_fret_len_space / 2; ;
 							x_path = DrawX(temp_adj);
 							canvas.DrawPath(x_path, paint_red); ;
 							break;
 						case 3:
 							temp_adj = str_3[0];
-							temp_adj.Y = temp_adj.Y - fret_len_space / 2; ;
+							temp_adj.Y = temp_adj.Y - m_fret_len_space / 2; ;
 							x_path = DrawX(temp_adj);
 							canvas.DrawPath(x_path, paint_red);
 							break;
 						case 4:
 							temp_adj = str_2[0];
-							temp_adj.Y = temp_adj.Y - fret_len_space / 2; ;
+							temp_adj.Y = temp_adj.Y - m_fret_len_space / 2; ;
 							x_path = DrawX(temp_adj);
 							canvas.DrawPath(x_path, paint_red);
 							break;
 						case 5:
 							temp_adj = str_1[0];
-							temp_adj.Y = temp_adj.Y - fret_len_space / 2; ;
+							temp_adj.Y = temp_adj.Y - m_fret_len_space / 2; ;
 							x_path = DrawX(temp_adj);
 							canvas.DrawPath(x_path, paint_red);
 							break;

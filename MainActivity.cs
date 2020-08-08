@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Packaged_Database
 {
-	[Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
+	[Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher", Theme = "@style/AppTheme", MainLauncher = true)]
 	public class MainActivity : Activity
 	{
 
